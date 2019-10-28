@@ -1,0 +1,37 @@
+;min function given to us in tutorial
+add	r0, #4, r9 ;int g = 4
+min:  add r26,r0,r1       ; mov a to new register v
+      sub r27,r1,r0,{C}   ; if v > b
+      jge min0
+      xor r0,r0,r0        ; nop in delay slot
+      add r27,r0,r1       ; v = b
+min0: sub r28,r1,r0,{C}   ; v > c
+      jge min1
+      xor r0,r0,r0        ; nop
+      add r28,r0,r1       ; v = b
+min1: ret r25,0           ; return
+      xor r0,r0,r0        ; nop in delay slot
+
+
+ p:    add r9,r0,r10       ; first parameter of min = g
+       add r26,r0,r11      ; second parameter of min = i
+       callr r25, min      ; call min
+       add r27,r0,r12      ; third parameter of min = j
+       add r1,r0,r10       ; first parameter of min is the result of last min
+       add r28,r0,r11      ; second parameter of min = k
+       callr r25, min      ; call min
+       add r29,r0,r11      ; third parameter of min = l
+       ret r25,0           ;
+       xor r0,r0,r0        ; nop in delay slot
+
+ gcd:  sub r27,r0,r0,{C}   ; if (b == 0)
+       jeq note
+       add r26,r0,r1       ; r1 = a - computed every loop
+       add r26,r0,r10      ; first parameter is a for mod
+       callr r25,mod       ; call mod
+       add r27,r0,r11      ; second parameter is b for mod
+       add r27,r0,r10      ; first parameter is b for gcd
+       callr r25,gcd       ; call gcd
+       add r1,r0,r11       ; second parameter is a%b for gcd
+ note: ret r25,0           ;
+       xor r0,r0,r0        ; nop in delay slot
